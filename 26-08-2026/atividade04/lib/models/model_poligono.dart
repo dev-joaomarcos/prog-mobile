@@ -9,13 +9,13 @@ class ResultadoCirculo {
 }
 
 class ResultadoLosango {
-  final double base;
-  final double altura;
+  final double diagonalMaior;
+  final double diagonalMenor;
   final double area;
 
   ResultadoLosango({
-    required this.base,
-    required this.altura,
+    required this.diagonalMaior,
+    required this.diagonalMenor,
     required this.area,
   });
 }
@@ -43,12 +43,14 @@ class ResultadoRetangulo {
 }
 
 class ResultadoTrapezio {
-  final double base;
+  final double baseMaior;
+  final double baseMenor;
   final double altura;
   final double area;
 
   ResultadoTrapezio({
-    required this.base,
+    required this.baseMaior,
+    required this.baseMenor,
     required this.altura,
     required this.area,
   });

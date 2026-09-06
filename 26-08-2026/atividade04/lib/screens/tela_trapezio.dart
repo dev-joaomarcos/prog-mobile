@@ -14,23 +14,26 @@ class TelaTrapezioScreen extends StatefulWidget {
  
 class _TelaTrapezioScreenScreenState extends State<TelaTrapezioScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _baseController = TextEditingController();
+
+  final _baseMaiorController = TextEditingController();
+  final _baseMenorController = TextEditingController();
   final _alturaController = TextEditingController();
  
   ResultadoTrapezio? _resultado;
  
-  /// A = (base x altura) / 2
   void _calcularArea() {
     if (!_formKey.currentState!.validate()) return;
  
-    final base = double.parse(_baseController.text.replaceAll(',', '.'));
+    final baseMaior = double.parse(_baseMaiorController.text.replaceAll(',', '.'));
+    final baseMenor = double.parse(_baseMenorController.text.replaceAll(',', '.'));
     final altura = double.parse(_alturaController.text.replaceAll(',', '.'));
  
-    final area = (base * altura) / 2;
+    final area = ((baseMaior + baseMenor) * altura) / 2;
  
     setState(() {
       _resultado = ResultadoTrapezio(
-        base: base,
+        baseMaior: baseMaior,
+        baseMenor: baseMenor,
         altura: altura,
         area: double.parse(area.toStringAsFixed(2)),
       );
@@ -46,7 +49,8 @@ class _TelaTrapezioScreenScreenState extends State<TelaTrapezioScreen> {
  
   @override
   void dispose() {
-    _baseController.dispose();
+    _baseMaiorController.dispose();
+    _baseMenorController.dispose();
     _alturaController.dispose();
     super.dispose();
   }
@@ -62,15 +66,26 @@ class _TelaTrapezioScreenScreenState extends State<TelaTrapezioScreen> {
           child: ListView(
             children: [
               const Text(
-                'A = (b . h) / 2',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                'A = (B + b) . h / 2',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _baseController,
+                controller: _baseMaiorController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
-                  labelText: 'Base (b)',
+                  labelText: 'Base Maior (B)',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.straighten),
+                ),
+                validator: _validarNumero,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _baseMenorController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  labelText: 'Base Menor (b)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.straighten),
                 ),

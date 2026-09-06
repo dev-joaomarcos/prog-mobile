@@ -16,6 +16,7 @@ class TelaQuadradoScreen extends StatefulWidget {
  
 class _TelaQuadradoScreenScreenState extends State<TelaQuadradoScreen> {
   final _formKey = GlobalKey<FormState>();
+  
   final _ladoController = TextEditingController();
  
   ResultadoQuadrado? _resultado;
@@ -60,7 +61,7 @@ class _TelaQuadradoScreenScreenState extends State<TelaQuadradoScreen> {
             children: [
               const Text(
                 'A = L²',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -69,7 +70,7 @@ class _TelaQuadradoScreenScreenState extends State<TelaQuadradoScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Lado (L)',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.straighten),
+                  prefixIcon: Icon(Icons.square_foot),
                 ),
                 validator: _validarNumero,
               ),

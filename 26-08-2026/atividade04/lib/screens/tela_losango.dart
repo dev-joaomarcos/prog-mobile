@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 //HAHA!!! ERA SÓ IMPORTAR O MODEL, EU PASSEI TEMPO DEMAIS PRA DESCOBRIR ISSO.
 import 'package:atividade04/models/model_poligono.dart';
-
 // ============================================================================
 // TELA
 // ============================================================================
@@ -14,24 +13,24 @@ class TelaLosangoScreen extends StatefulWidget {
  
 class _TelaLosangoScreenScreenState extends State<TelaLosangoScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _baseController = TextEditingController();
-  final _alturaController = TextEditingController();
+  
+  final _diagonalMaiorController = TextEditingController();
+  final _diagonalMenorController = TextEditingController();
  
   ResultadoLosango? _resultado;
- 
-  /// A = (base x altura) / 2
+
   void _calcularArea() {
     if (!_formKey.currentState!.validate()) return;
  
-    final base = double.parse(_baseController.text.replaceAll(',', '.'));
-    final altura = double.parse(_alturaController.text.replaceAll(',', '.'));
+    final diagonalMaior = double.parse(_diagonalMaiorController.text.replaceAll(',', '.'));
+    final diagonalMenor = double.parse(_diagonalMenorController.text.replaceAll(',', '.'));
  
-    final area = (base * altura) / 2;
+    final area = (diagonalMaior * diagonalMenor) / 2;
  
     setState(() {
       _resultado = ResultadoLosango(
-        base: base,
-        altura: altura,
+        diagonalMaior: diagonalMaior,
+        diagonalMenor: diagonalMenor,
         area: double.parse(area.toStringAsFixed(2)),
       );
     });
@@ -46,8 +45,8 @@ class _TelaLosangoScreenScreenState extends State<TelaLosangoScreen> {
  
   @override
   void dispose() {
-    _baseController.dispose();
-    _alturaController.dispose();
+    _diagonalMaiorController.dispose();
+    _diagonalMenorController.dispose();
     super.dispose();
   }
  
@@ -62,26 +61,26 @@ class _TelaLosangoScreenScreenState extends State<TelaLosangoScreen> {
           child: ListView(
             children: [
               const Text(
-                'A = (b . h) / 2',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                'A = (D . d) / 2',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 20),
               TextFormField(
-                controller: _baseController,
+                controller: _diagonalMaiorController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
-                  labelText: 'Base (b)',
+                  labelText: 'Diagonal Maior (D)',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.straighten),
+                  prefixIcon: Icon(Icons.height),
                 ),
                 validator: _validarNumero,
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _alturaController,
+                controller: _diagonalMenorController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
-                  labelText: 'Altura (h)',
+                  labelText: 'Diagonal Menor (d)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.height),
                 ),

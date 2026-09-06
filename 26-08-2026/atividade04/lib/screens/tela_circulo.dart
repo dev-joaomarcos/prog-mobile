@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 //HAHA!!! ERA SÓ IMPORTAR O MODEL, EU PASSEI TEMPO DEMAIS PRA DESCOBRIR ISSO.
 import 'package:atividade04/models/model_poligono.dart';
-
 // ============================================================================
 // TELA
 // ============================================================================
@@ -13,12 +12,11 @@ class TelaCirculoScreen extends StatefulWidget {
   @override
   State<TelaCirculoScreen> createState() => _TelaCirculoScreenScreenState();
 }
- 
-class _TelaCirculoScreenScreenState extends State<TelaCirculoScreen> {
+ class _TelaCirculoScreenScreenState extends State<TelaCirculoScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _raioController = TextEditingController();
 
- 
   ResultadoCirculo? _resultado;
  
   void _calcularArea() {
@@ -53,7 +51,7 @@ class _TelaCirculoScreenScreenState extends State<TelaCirculoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Área do Circulo')),
+      appBar: AppBar(title: const Text('Área do Círculo')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -62,7 +60,7 @@ class _TelaCirculoScreenScreenState extends State<TelaCirculoScreen> {
             children: [
               const Text(
                 'A = π . r²',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -71,7 +69,7 @@ class _TelaCirculoScreenScreenState extends State<TelaCirculoScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Raio (r)',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.straighten),
+                  prefixIcon: Icon(Icons.track_changes),
                 ),
                 validator: _validarNumero,
               ),

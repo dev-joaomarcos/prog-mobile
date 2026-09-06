@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Calcular Circulo'),
+                child: const Text('Calcular Círculo'),
               ),
 
               const SizedBox(height: 50),
@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Calcular Retangulo'),
+                child: const Text('Calcular Retângulo'),
               ),
 
               const SizedBox(height: 50),
@@ -126,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Calcular Trapezio'),
+                child: const Text('Calcular Trapézio'),
               ),
 
               const SizedBox(height: 50),
@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Calcular Triangulo'),
+                child: const Text('Calcular Triângulo'),
               ),
             ],
           ),

@@ -11,6 +11,7 @@ class TelaRetanguloScreen extends StatefulWidget {
  
 class _TelaRetanguloScreenScreenState extends State<TelaRetanguloScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _baseController = TextEditingController();
   final _alturaController = TextEditingController();
  
@@ -60,7 +61,7 @@ class _TelaRetanguloScreenScreenState extends State<TelaRetanguloScreen> {
             children: [
               const Text(
                 'A = b . h',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 20),
               TextFormField(

@@ -63,7 +63,7 @@ class _TelaTrianguloScreenScreenState extends State<TelaTrianguloScreen> {
             children: [
               const Text(
                 'A = (b . h) / 2',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 20),
               TextFormField(
