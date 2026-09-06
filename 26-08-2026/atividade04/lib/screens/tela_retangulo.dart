@@ -17,7 +17,6 @@ class _TelaRetanguloScreenScreenState extends State<TelaRetanguloScreen> {
  
   ResultadoRetangulo? _resultado;
  
-  /// A = (base x altura) / 2
   void _calcularArea() {
     if (!_formKey.currentState!.validate()) return;
  
