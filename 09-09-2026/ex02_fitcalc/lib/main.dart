@@ -14,7 +14,7 @@ class FitCalcApp extends StatelessWidget {
     return MaterialApp(
       title: 'Calculadora fitness',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.blueAccent, useMaterial3: true),
+      theme: ThemeData(colorSchemeSeed: Colors.deepPurpleAccent, useMaterial3: true),
       home: const HomeScreen(),
     );
   }

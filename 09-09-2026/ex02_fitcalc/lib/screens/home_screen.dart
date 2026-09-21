@@ -20,11 +20,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.lunch_dining,
-                size: 72,
-                color: Colors.deepOrange,
-              ),
+              const Icon(Icons.calculate, size: 72, color: Colors.deepPurpleAccent),
               const SizedBox(height: 12),
               const Text(
                 'Selecione o cálculo desejado',
@@ -69,12 +65,11 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const FrequenciaScreen(),
+                        builder: (context) => const FrequenciaScreen(),
                       ),
                     );
                   },
-                  icon: const Icon(Icons.payments_outlined),
+                  icon: const Icon(Icons.monitor_heart),
                   label: const Text(
                     'Calcular Frequencia Cardiaca Maxima',
                     style: TextStyle(fontSize: 16),
@@ -99,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.percent_outlined),
+                  icon: const Icon(Icons.directions_walk),
                   label: const Text(
                     'Calcular Meta de Passos',
                     style: TextStyle(fontSize: 16),
