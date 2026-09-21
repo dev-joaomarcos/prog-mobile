@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../models/resultado_Passos.dart';
-
-// ============================================================================
-// TELA
-// ============================================================================
 class PassosScreen extends StatefulWidget {
   const PassosScreen({super.key});
 
@@ -15,175 +9,102 @@ class PassosScreen extends StatefulWidget {
 
 class _PassosScreenState extends State<PassosScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _quantidadeController = TextEditingController();
-  final _precoController = TextEditingController();
-  final _taxaController = TextEditingController(text: '0');
 
-  ResultadoPassos? _resultado;
+  final TextEditingController _passosController = TextEditingController();
 
-  final _formatoMoeda = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-
-
-  void _calcularPassos() {
-    if (!_formKey.currentState!.validate()) return;
-
-    final quantidade = int.parse(_quantidadeController.text);
-    final precoUnitario = double.parse(
-      _precoController.text.replaceAll(',', '.'),
-    );
-    final taxaEntrega = double.parse(_taxaController.text.replaceAll(',', '.'));
-
-    final subtotal = quantidade * precoUnitario;
-    final total = subtotal + taxaEntrega;
-
-    setState(() {
-      _resultado = ResultadoPassos(
-        quantidade: quantidade,
-        precoUnitario: precoUnitario,
-        taxaEntrega: taxaEntrega,
-        subtotal: double.parse(subtotal.toStringAsFixed(2)),
-        total: double.parse(total.toStringAsFixed(2)),
-      );
-    });
-  }
-
-  String? _validarInteiro(String? valor) {
-    if (valor == null || valor.isEmpty) return 'Informe a quantidade';
-    final numero = int.tryParse(valor);
-    if (numero == null || numero <= 0)
-      return 'Informe um número inteiro válido';
-    return null;
-  }
-
-  String? _validarValor(String? valor) {
-    if (valor == null || valor.isEmpty) return 'Informe um valor';
-    final numero = double.tryParse(valor.replaceAll(',', '.'));
-    if (numero == null || numero < 0) return 'Informe um valor numérico válido';
-    return null;
-  }
+  String _resultado = '';
 
   @override
   void dispose() {
-    _quantidadeController.dispose();
-    _precoController.dispose();
-    _taxaController.dispose();
+    _passosController.dispose();
     super.dispose();
+  }
+
+  void _calcularMeta() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final int passos = int.parse(_passosController.text);
+
+    // Meta de exemplo.
+    const int meta = 10000;
+
+    final int restantes = meta - passos;
+
+    setState(() {
+      if (restantes > 0) {
+        _resultado = 'Faltam $restantes passos para atingir a meta de $meta.';
+      } else {
+        _resultado = 'Meta de $meta passos atingida!';
+      }
+    });
+  }
+
+  String? _validarPassos(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Informe a quantidade de passos';
+    }
+
+    final passos = int.tryParse(value);
+
+    if (passos == null || passos < 0) {
+      return 'Informe uma quantidade válida';
+    }
+
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Total do Passos')),
+      appBar: AppBar(title: const Text('Meta de Passos'), centerTitle: true),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24.0),
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Column(
             children: [
               TextFormField(
-                controller: _quantidadeController,
+                controller: _passosController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Quantidade de itens',
+                  labelText: 'Passos realizados',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.numbers),
                 ),
-                validator: _validarInteiro,
+                validator: _validarPassos,
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _precoController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                decoration: const InputDecoration(
-                  labelText: 'Preço unitário (R\$)',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
-                ),
-                validator: _validarValor,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _taxaController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                decoration: const InputDecoration(
-                  labelText: 'Taxa de entrega (R\$)',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.delivery_dining),
-                ),
-                validator: _validarValor,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _calcularPassos,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  child: Text('Calcular', style: TextStyle(fontSize: 16)),
-                ),
-              ),
+
               const SizedBox(height: 24),
-              if (_resultado != null) _buildResultado(_resultado!),
+
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _calcularMeta,
+                  child: const Text('Calcular'),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              if (_resultado.isNotEmpty)
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      _resultado,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildResultado(ResultadoPassos r) {
-    return Card(
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Resultado',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const Divider(),
-            _linha(
-              'Subtotal (${r.quantidade} x ${_formatoMoeda.format(r.precoUnitario)})',
-              _formatoMoeda.format(r.subtotal),
-            ),
-            _linha('Taxa de entrega', _formatoMoeda.format(r.taxaEntrega)),
-            const Divider(),
-            _linha(
-              'Total do Passos',
-              _formatoMoeda.format(r.total),
-              destaque: true,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _linha(String rotulo, String valor, {bool destaque = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            rotulo,
-            style: destaque
-                ? const TextStyle(fontWeight: FontWeight.bold)
-                : null,
-          ),
-          Text(
-            valor,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: destaque ? Colors.deepOrange : null,
-              fontSize: destaque ? 16 : 14,
-            ),
-          ),
-        ],
       ),
     );
   }
