@@ -1,0 +1,8 @@
+Adicione ao pubspec.yaml do projeto (fora da pasta lib/):
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.19.0
+
+Depois rode: flutter pub get

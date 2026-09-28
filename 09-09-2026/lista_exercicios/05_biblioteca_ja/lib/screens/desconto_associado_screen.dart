@@ -1,0 +1,133 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../models/resultado_desconto_associado.dart';
+
+class DescontoAssociadoScreen extends StatefulWidget {
+  const DescontoAssociadoScreen({super.key});
+
+  @override
+  State<DescontoAssociadoScreen> createState() => _DescontoAssociadoScreenState();
+}
+
+class _DescontoAssociadoScreenState extends State<DescontoAssociadoScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _multaController = TextEditingController();
+  bool _associado = false;
+
+  ResultadoDescontoAssociado? _resultado;
+  final _formatoMoeda = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
+  void _calcularDescontoAssociado() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final valorMulta = double.parse(_multaController.text.replaceAll(',', '.'));
+    final valorFinal = _associado ? valorMulta * 0.8 : valorMulta;
+
+    setState(() {
+      _resultado = ResultadoDescontoAssociado(
+        valorMulta: valorMulta,
+        associado: _associado,
+        valorFinal: double.parse(valorFinal.toStringAsFixed(2)),
+      );
+    });
+  }
+
+  String? _validarValor(String? valor) {
+    if (valor == null || valor.isEmpty) return 'Informe um valor';
+    final numero = double.tryParse(valor.replaceAll(',', '.'));
+    if (numero == null || numero <= 0) return 'Informe um valor numérico válido';
+    return null;
+  }
+
+  @override
+  void dispose() {
+    _multaController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Desconto para Associados')),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _multaController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  labelText: 'Valor da multa (R\$)',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.attach_money),
+                ),
+                validator: _validarValor,
+              ),
+              const SizedBox(height: 16),
+              SwitchListTile(
+                title: const Text('Pessoa associada da biblioteca'),
+                value: _associado,
+                onChanged: (valor) {
+                  setState(() {
+                    _associado = valor;
+                  });
+                },
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: _calcularDescontoAssociado,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  child: Text('Calcular', style: TextStyle(fontSize: 16)),
+                ),
+              ),
+              const SizedBox(height: 24),
+              if (_resultado != null) _buildResultado(_resultado!),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResultado(ResultadoDescontoAssociado r) {
+    return Card(
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Resultado', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Divider(),
+            _linha('Associado', r.associado ? 'Sim (20% de desconto)' : 'Não'),
+            const Divider(),
+            _linha('Valor final', _formatoMoeda.format(r.valorFinal), destaque: true),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _linha(String rotulo, String valor, {bool destaque = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(rotulo, style: destaque ? const TextStyle(fontWeight: FontWeight.bold) : null),
+          Text(
+            valor,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: destaque ? Colors.brown : null,
+              fontSize: destaque ? 16 : 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
